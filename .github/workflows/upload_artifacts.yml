@@ -1,0 +1,21 @@
+name: 'publish'
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+
+    steps:
+      - uses: actions/checkout@master
+      - name: make
+        run: make
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dsvpn_${{matrix.os}}_${{env.GITHUB_SHA}}
+          path: dsvpn
